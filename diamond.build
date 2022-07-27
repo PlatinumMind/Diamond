@@ -1,29 +1,30 @@
-[vars]
-bin="bin/dbuild"
-src="src/main.go"
-
 [pre]
 cmd = "" 
 
 [[step]]
 name = "build windows 64 bit"
-cmd = "GOOS=windows GOARCH=amd64 go build -o {bin}-amd64.exe {src}"
+cmd = "GOOS=windows GOARCH=amd64 go build -o bin/dbuild-amd64.exe src/main.go"
 
 [[step]]
 name = "build windows 32 bit"
-cmd = "GOOS=windows GOARCH=386 go build -o {bin}-i386.exe {src}"
+cmd = "GOOS=windows GOARCH=386 go build -o bin/dbuild-i386.exe src/main.go"
 
 [[step]]
 name = "build MacOSX 64 bit"
-cmd = "GOOS=darwin GOARCH=amd64 go build -o {bin}-amd64-darwin {src}"
+cmd = "GOOS=darwin GOARCH=amd64 go build -o bin/dbuild-amd64-darwin src/main.go"
+
+[[step]]
+name = "build MacOSX 32 bit"
+cmd = "GOOS=darwin GOARCH=386 go build -o bin/dbuild-386-darwin src/main.go"
+
 
 [[step]]
 name = "build Linux 64 bit"
-cmd = "GOOS=linux GOARCH=amd64 go build -o {bin}-amd64-linux {src}"
+cmd = "GOOS=linux GOARCH=amd64 go build -o bin/dbuild-amd64-linux src/main.go"
 
 [[step]]
 name = "build Linux 32 bit"
-cmd = "GOOS=linux GOARCH=386 go build -o {bin}-i386-linux {src}"
+cmd = "GOOS=linux GOARCH=386 go build -o bin/dbuild-i386-linux src/main.go"
 
 
 [clean]
