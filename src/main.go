@@ -8,10 +8,18 @@ import (
 	"os/exec"
 	"regexp"
 	"runtime"
+	"strconv"
 	"strings"
+	"time"
 
 	"github.com/pelletier/go-toml/v2"
 )
+
+type AppData struct {
+	Name      string
+	Version   string
+	BuildDate string
+}
 
 type Step struct {
 	Name string
@@ -26,32 +34,40 @@ type Clean struct {
 	Cmd string
 }
 
-type Label struct {
-	Name  string
-	Pre   Pre
-	Step  []Step
-	Clean Clean
-}
-
-type instruction struct {
+type Instruction struct {
 	Vars  map[string]string
 	Pre   Pre
 	Step  []Step
 	Clean Clean
-	Label []Label
 }
 
 func main() {
-	var cfg instruction
-	content, err := os.ReadFile("diamond.build")
-	if err != nil {
-		fmt.Fprintln(io.Writer(os.Stderr), "No diamond.build file found")
+	year, month, day := time.Now().Date()
+
+	appData := AppData{
+		Name:      "Diamond Build",
+		Version:   "0.0.3",
+		BuildDate: fmt.Sprintf("%s-%s-%s", strconv.Itoa(year), month, strconv.Itoa(day)),
 	}
-	toml.Unmarshal(content, &cfg)
-	run(cfg)
+	if os.Args[1] == "" {
+		var cfg Instruction
+		content, err := os.ReadFile("diamond.build")
+		if err != nil {
+			fmt.Fprintln(io.Writer(os.Stderr), "No diamond.build file found")
+		}
+		toml.Unmarshal(content, &cfg)
+		run(cfg)
+	}
+	if os.Args[1] == "--version" {
+		versionData := fmt.Sprintf(`%s by Platinum Mind
+Version: %s
+Build Date: %s`, appData.Name, appData.Version, appData.BuildDate)
+		println(versionData)
+
+	}
 }
 
-func run(cfg instruction) {
+func run(cfg Instruction) {
 
 	if cfg.Pre.Cmd != "" {
 		println("preparing build: ")
