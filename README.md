@@ -14,7 +14,7 @@
 
 ```sh
 # linux install script
-wget -qO- https://raw.githubusercontent.com/xonon-business/Diamond/main/install.sh | bash
+wget -qO- https://raw.githubusercontent.com/PlatinumMind/Diamond/main/install.sh | bash
 ```
 
 ## Usage
