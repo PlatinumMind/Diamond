@@ -8,7 +8,7 @@
 
 > Diamond is a build tool to rule them all. it is very fast(written in go), very secure and planning to add caching(if possible), and concurrent execution
 
-### 🏠 [Homepage](github.com/xonon-buisness/Diamond)
+### 🏠 [Homepage](https://github.com/PlatinumMind/Diamond)
 
 ## Install
 
