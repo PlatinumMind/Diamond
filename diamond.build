@@ -1,4 +1,8 @@
-[[go_exe]]
-src = "src/main.go"
-platforms = ["win32", "darwin", "linux"]
-output = { binname = "test", outpath = "build" }
+[[cpp_bin]]
+src = "./src/main.c"
+root = "./src"
+cxx = "clang"
+cache = true
+cxxflags = []
+ldflags = []
+output = { exec_name = "my-exec", out_dir = "build" }
