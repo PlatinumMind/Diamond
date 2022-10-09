@@ -20,10 +20,29 @@ pub struct CxxBin {
 
 impl CxxBin {
     pub fn make_command(self) -> String {
+        let tmp = format!("{}{}", self.root.as_str(), "/**/*.c");
+        let path = tmp.as_str();
+        let mut files: Vec<String> = vec![];
+        if !std::path::Path::new(&path).exists() {
+            std::fs::create_dir(path);
+        }
+        for file in glob::glob(&*path).expect("Failed to read glob pattern") {
+            match file {
+                Ok(path) => {
+                    let path_str = path.display().to_string();
+                    let local_src = self.src.strip_prefix("./").unwrap();
+                    if path_str != local_src {
+                        // println!("{} {}", path.display().to_string(), local_src);
+                        files.push(path.display().to_string())
+                    }
+                }
+                Err(e) => println!("{:?}", e),
+            }
+        }
         let cmd = gen_command(
             self.cxx,
             self.src,
-            self.root,
+            files,
             self.cxxflags,
             self.ldflags,
             self.output,
@@ -35,7 +54,7 @@ impl CxxBin {
 fn gen_command(
     compiler: String,
     source: String,
-    root: String,
+    files: Vec<String>,
     raw_cxxflags: Option<Vec<String>>,
     raw_ldflags: Option<Vec<String>>,
     output: Output,
@@ -63,12 +82,12 @@ fn gen_command(
         + " "
         + &source
         + " "
-        + &root
-        + "/**/* "
+        + &files.join(" ")
+        + " "
         + &cxxflags
         + " "
         + &ldflags
-        + "-o "
+        + " -o "
         + &output.out_dir
         + "/"
         + &output.exec_name;

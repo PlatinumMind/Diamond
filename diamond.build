@@ -1,8 +1,0 @@
-[[cpp_bin]]
-src = "./src/main.c"
-root = "./src"
-cxx = "clang"
-cache = true
-cxxflags = []
-ldflags = []
-output = { exec_name = "my-exec", out_dir = "build" }

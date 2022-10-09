@@ -1,4 +1,4 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize)]
-pub struct Cxx_lib {}
+pub struct CxxLib {}
