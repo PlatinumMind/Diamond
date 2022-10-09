@@ -20,11 +20,12 @@ pub struct CxxBin {
 
 impl CxxBin {
     pub fn make_command(self) -> String {
-        let tmp = format!("{}{}", self.root.as_str(), "/**/*.c");
+        let tmp = format!("{}{}", self.root.as_str(), "/**/*{.cc,.cpp}");
         let path = tmp.as_str();
+        let build_path = self.output.out_dir.as_str();
         let mut files: Vec<String> = vec![];
-        if !std::path::Path::new(&path).exists() {
-            std::fs::create_dir(path);
+        if !std::path::Path::new(&build_path).exists() {
+            std::fs::create_dir(build_path);
         }
         for file in glob::glob(&*path).expect("Failed to read glob pattern") {
             match file {
@@ -32,7 +33,6 @@ impl CxxBin {
                     let path_str = path.display().to_string();
                     let local_src = self.src.strip_prefix("./").unwrap();
                     if path_str != local_src {
-                        // println!("{} {}", path.display().to_string(), local_src);
                         files.push(path.display().to_string())
                     }
                 }
