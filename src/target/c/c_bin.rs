@@ -24,7 +24,7 @@ impl CBin {
         let path = tmp.as_str();
         let mut files: Vec<String> = vec![];
         if !std::path::Path::new(&path).exists() {
-            std::fs::create_dir(path);
+            let _res = std::fs::create_dir(path);
         }
         for file in glob::glob(&*path).expect("Failed to read glob pattern") {
             match file {
@@ -47,6 +47,9 @@ impl CBin {
             self.ldflags,
             self.output,
         );
+        if self.cache.unwrap() {
+            return format!("CCACHE_DIR=.dbuild ccache {}", cmd);
+        }
         return cmd;
     }
 }
